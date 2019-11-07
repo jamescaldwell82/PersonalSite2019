@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PersonalSiteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BlogImages">
+          <Key>
+            <PropertyRef Name="BlogImageId" />
+          </Key>
+          <Property Name="BlogImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BlogId" Type="int" Nullable="false" />
+          <Property Name="ImageId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Blogs">
+          <Key>
+            <PropertyRef Name="BlogId" />
+          </Key>
+          <Property Name="BlogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BlogName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="BlogDescription" Type="varchar(max)" />
+          <Property Name="BlogBody" Type="varchar(max)" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="IsFeatured" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmailSignup">
+          <Key>
+            <PropertyRef Name="EmailSignupId" />
+          </Key>
+          <Property Name="EmailSignupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="75" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Images">
+          <Key>
+            <PropertyRef Name="ImageId" />
+          </Key>
+          <Property Name="ImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImageURL" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsCoverPhoto" Type="bit" />
+        </EntityType>
+        <EntityType Name="Resources">
+          <Key>
+            <PropertyRef Name="ResourceId" />
+          </Key>
+          <Property Name="ResourceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResourceTitle" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ResourceUrl" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ResourceImage" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK_BlogImages_Blogs">
+          <End Role="Blogs" Type="Self.Blogs" Multiplicity="1" />
+          <End Role="BlogImages" Type="Self.BlogImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blogs">
+              <PropertyRef Name="BlogId" />
+            </Principal>
+            <Dependent Role="BlogImages">
+              <PropertyRef Name="BlogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlogImages_Images">
+          <End Role="Images" Type="Self.Images" Multiplicity="1" />
+          <End Role="BlogImages" Type="Self.BlogImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Images">
+              <PropertyRef Name="ImageId" />
+            </Principal>
+            <Dependent Role="BlogImages">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PersonalSiteModelStoreContainer">
+          <EntitySet Name="BlogImages" EntityType="Self.BlogImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Blogs" EntityType="Self.Blogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmailSignup" EntityType="Self.EmailSignup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resources" EntityType="Self.Resources" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BlogImages_Blogs" Association="Self.FK_BlogImages_Blogs">
+            <End Role="Blogs" EntitySet="Blogs" />
+            <End Role="BlogImages" EntitySet="BlogImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlogImages_Images" Association="Self.FK_BlogImages_Images">
+            <End Role="Images" EntitySet="Images" />
+            <End Role="BlogImages" EntitySet="BlogImages" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PersonalSiteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BlogImage">
+          <Key>
+            <PropertyRef Name="BlogImageId" />
+          </Key>
+          <Property Name="BlogImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BlogId" Type="Int32" Nullable="false" />
+          <Property Name="ImageId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Blog" Relationship="Self.FK_BlogImages_Blogs" FromRole="BlogImages" ToRole="Blogs" />
+          <NavigationProperty Name="Image" Relationship="Self.FK_BlogImages_Images" FromRole="BlogImages" ToRole="Images" />
+        </EntityType>
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="BlogId" />
+          </Key>
+          <Property Name="BlogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BlogName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BlogDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BlogBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="IsFeatured" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BlogImages" Relationship="Self.FK_BlogImages_Blogs" FromRole="Blogs" ToRole="BlogImages" />
+        </EntityType>
+        <EntityType Name="EmailSignup">
+          <Key>
+            <PropertyRef Name="EmailSignupId" />
+          </Key>
+          <Property Name="EmailSignupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="75" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ImageId" />
+          </Key>
+          <Property Name="ImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImageURL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsCoverPhoto" Type="Boolean" />
+          <NavigationProperty Name="BlogImages" Relationship="Self.FK_BlogImages_Images" FromRole="Images" ToRole="BlogImages" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="ResourceId" />
+          </Key>
+          <Property Name="ResourceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ResourceUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ResourceImage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_BlogImages_Blogs">
+          <End Role="Blogs" Type="Self.Blog" Multiplicity="1" />
+          <End Role="BlogImages" Type="Self.BlogImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blogs">
+              <PropertyRef Name="BlogId" />
+            </Principal>
+            <Dependent Role="BlogImages">
+              <PropertyRef Name="BlogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlogImages_Images">
+          <End Role="Images" Type="Self.Image" Multiplicity="1" />
+          <End Role="BlogImages" Type="Self.BlogImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Images">
+              <PropertyRef Name="ImageId" />
+            </Principal>
+            <Dependent Role="BlogImages">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PersonalSiteEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BlogImages" EntityType="Self.BlogImage" />
+          <EntitySet Name="Blogs" EntityType="Self.Blog" />
+          <EntitySet Name="EmailSignups" EntityType="Self.EmailSignup" />
+          <EntitySet Name="Images" EntityType="Self.Image" />
+          <EntitySet Name="Resources" EntityType="Self.Resource" />
+          <AssociationSet Name="FK_BlogImages_Blogs" Association="Self.FK_BlogImages_Blogs">
+            <End Role="Blogs" EntitySet="Blogs" />
+            <End Role="BlogImages" EntitySet="BlogImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlogImages_Images" Association="Self.FK_BlogImages_Images">
+            <End Role="Images" EntitySet="Images" />
+            <End Role="BlogImages" EntitySet="BlogImages" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PersonalSiteModelStoreContainer" CdmEntityContainer="PersonalSiteEntities1">
+          <EntitySetMapping Name="BlogImages">
+            <EntityTypeMapping TypeName="PersonalSiteModel.BlogImage">
+              <MappingFragment StoreEntitySet="BlogImages">
+                <ScalarProperty Name="BlogImageId" ColumnName="BlogImageId" />
+                <ScalarProperty Name="BlogId" ColumnName="BlogId" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Blogs">
+            <EntityTypeMapping TypeName="PersonalSiteModel.Blog">
+              <MappingFragment StoreEntitySet="Blogs">
+                <ScalarProperty Name="BlogId" ColumnName="BlogId" />
+                <ScalarProperty Name="BlogName" ColumnName="BlogName" />
+                <ScalarProperty Name="BlogDescription" ColumnName="BlogDescription" />
+                <ScalarProperty Name="BlogBody" ColumnName="BlogBody" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="IsFeatured" ColumnName="IsFeatured" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailSignups">
+            <EntityTypeMapping TypeName="PersonalSiteModel.EmailSignup">
+              <MappingFragment StoreEntitySet="EmailSignup">
+                <ScalarProperty Name="EmailSignupId" ColumnName="EmailSignupId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="PersonalSiteModel.Image">
+              <MappingFragment StoreEntitySet="Images">
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+                <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
+                <ScalarProperty Name="IsCoverPhoto" ColumnName="IsCoverPhoto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resources">
+            <EntityTypeMapping TypeName="PersonalSiteModel.Resource">
+              <MappingFragment StoreEntitySet="Resources">
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="ResourceTitle" ColumnName="ResourceTitle" />
+                <ScalarProperty Name="ResourceUrl" ColumnName="ResourceUrl" />
+                <ScalarProperty Name="ResourceImage" ColumnName="ResourceImage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

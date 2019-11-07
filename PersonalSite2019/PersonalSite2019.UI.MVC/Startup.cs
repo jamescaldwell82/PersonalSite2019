@@ -1,8 +1,6 @@
-﻿using Microsoft.Owin;
-using Owin;
+﻿using Owin;
 
-[assembly: OwinStartupAttribute(typeof(PersonalSite2019.UI.MVC.Startup))]
-namespace PersonalSite2019.UI.MVC
+namespace PersonalSite2019.MVC.UI
 {
     public partial class Startup
     {

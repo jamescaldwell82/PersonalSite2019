@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace PersonalSite2019.UI.MVC.Models
+namespace PersonalSite2019.MVC.UI.Models
 {
     public class ExternalLoginConfirmationViewModel
     {
